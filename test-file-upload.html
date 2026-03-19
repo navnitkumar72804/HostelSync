@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test File Upload</title>
+</head>
+<body>
+    <h1>Test File Upload for Complaints</h1>
+    <form id="complaintForm" enctype="multipart/form-data">
+        <div>
+            <label>Title:</label>
+            <input type="text" name="title" value="Test Complaint" required>
+        </div>
+        <div>
+            <label>Description:</label>
+            <textarea name="description" required>Test description</textarea>
+        </div>
+        <div>
+            <label>Category:</label>
+            <select name="category">
+                <option value="Cleaning">Cleaning</option>
+            </select>
+        </div>
+        <div>
+            <label>Priority:</label>
+            <select name="priority">
+                <option value="Medium">Medium</option>
+            </select>
+        </div>
+        <div>
+            <label>Attachments:</label>
+            <input type="file" name="attachments" multiple accept="image/*,video/*">
+        </div>
+        <button type="submit">Submit Complaint</button>
+    </form>
+
+    <script>
+        document.getElementById('complaintForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            
+            try {
+                const response = await fetch('http://localhost:5050/api/v1/complaints', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer YOUR_TOKEN_HERE'
+                    },
+                    body: formData
+                });
+                
+                const result = await response.json();
+                console.log('Response:', result);
+                alert('Complaint submitted: ' + result.message);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error: ' + error.message);
+            }
+        });
+    </script>
+</body>
+</html>
